@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le 47 — Burgers & Pizzas | Toulouse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --flame: #E84520;
+            --flame-dark: #C93A1A;
+            --gold: #F5B731;
+            --charcoal: #1A1A1A;
+            --smoke: #2C2C2C;
+            --cream: #FFF8F0;
+            --warm-gray: #B8A99A;
+            --text-light: #F0E6DA;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--charcoal);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* ─── GRAIN OVERLAY ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ─── NAVIGATION ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 1.2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            background: rgba(26, 26, 26, 0.85);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            letter-spacing: 2px;
+            color: var(--cream);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--flame);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--warm-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--flame);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--cream); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--flame) !important;
+            color: var(--cream) !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: var(--flame-dark) !important; }
+
+        /* ─── HAMBURGER MENU ─── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 200;
+            padding: 8px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 28px; height: 2.5px;
+            background: var(--cream);
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+            display: block;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, var(--charcoal) 0%, #0D0A08 40%, #1A0F0A 100%);
+        }
+
+        .hero-bg-glow {
+            position: absolute;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.2;
+            animation: pulseGlow 6s ease-in-out infinite alternate;
+        }
+
+        .hero-bg-glow.glow-1 {
+            background: var(--flame);
+            top: -200px; right: -100px;
+        }
+        .hero-bg-glow.glow-2 {
+            background: var(--gold);
+            bottom: -200px; left: -100px;
+            animation-delay: 3s;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.15; }
+            100% { transform: scale(1.15); opacity: 0.25; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(232, 69, 32, 0.15);
+            border: 1px solid rgba(232, 69, 32, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--flame);
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease 0.2s both;
+        }
+
+        .hero-badge::before {
+            content: '🔥';
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.9;
+            letter-spacing: -2px;
+            color: var(--cream);
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero h1 .accent {
+            color: var(--flame);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--warm-gray);
+            margin-top: 1.5rem;
+            font-weight: 400;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .btn {
+            padding: 1rem 2.2rem;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--flame);
+            color: var(--cream);
+            box-shadow: 0 8px 30px rgba(232, 69, 32, 0.35);
+        }
+        .btn-primary:hover {
+            background: var(--flame-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(232, 69, 32, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--cream);
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+        .btn-outline:hover {
+            border-color: var(--cream);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--warm-gray);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease 1.2s both;
+        }
+
+        .hero-scroll .line {
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--warm-gray), transparent);
+            animation: scrollLine 2s ease infinite;
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        /* ─── SECTION COMMON ─── */
+        section {
+            padding: 7rem 3rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--flame);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--cream);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ─── SPÉCIALITÉS ─── */
+        #menu {
+            background: var(--smoke);
+            position: relative;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 3rem auto 0;
+        }
+
+        .menu-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--flame), var(--gold));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232, 69, 32, 0.2);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .menu-card:hover::before { opacity: 1; }
+
+        .menu-card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .menu-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: var(--cream);
+            margin-bottom: 0.6rem;
+        }
+
+        .menu-card p {
+            color: var(--warm-gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .menu-card .price {
+            display: inline-block;
+            margin-top: 1rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        /* ─── À PROPOS ─── */
+        #about {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .stat-box {
+            background: rgba(232, 69, 32, 0.08);
+            border: 1px solid rgba(232, 69, 32, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--flame);
+            line-height: 1;
+        }
+
+        .stat-box .label {
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+            margin-top: 0.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .about-text p {
+            color: var(--warm-gray);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-image-placeholder {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: 24px;
+            background: linear-gradient(160deg, rgba(232, 69, 32, 0.12), rgba(245, 183, 49, 0.08));
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(0deg, rgba(26,26,26,0.8) 0%, transparent 50%);
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: 2rem; left: -1rem;
+            background: var(--flame);
+            color: var(--cream);
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            z-index: 3;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .floating-badge .badge-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .floating-badge .badge-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        /* ─── HORAIRES ─── */
+        #horaires {
+            background: var(--smoke);
+        }
+
+        .horaires-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .horaire-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+
+        .horaire-row:hover {
+            padding-left: 0.5rem;
+        }
+
+        .horaire-row.today {
+            background: rgba(232, 69, 32, 0.08);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin: 0.3rem -1.5rem;
+            border: 1px solid rgba(232, 69, 32, 0.2);
+        }
+
+        .horaire-row .day {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--cream);
+            min-width: 120px;
+        }
+
+        .horaire-row .hours {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .horaire-row .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #4ADE80;
+            display: inline-block;
+            margin-right: 0.5rem;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+        }
+
+        .horaire-row .dot.closed {
+            background: var(--flame);
+            box-shadow: 0 0 8px rgba(232, 69, 32, 0.5);
+        }
+
+        .horaire-note {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--warm-gray);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* ─── AVIS ─── */
+        #avis {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .avis-header {
+            display: flex;
+            align-items: flex-end;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .avis-score {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: var(--gold);
+        }
+
+        .avis-score-details {
+            margin-bottom: 0.5rem;
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+
+        .avis-count {
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+            margin-top: 0.2rem;
+        }
+
+        .avis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .avis-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .avis-card:hover {
+            border-color: rgba(245, 183, 49, 0.2);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .avis-card .avis-stars {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .avis-card p {
+            color: var(--warm-gray);
+            line-height: 1.7;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .avis-card .avis-author {
+            margin-top: 1.2rem;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--cream);
+        }
+
+        /* ─── CONTACT ─── */
+        #contact {
+            background: var(--smoke);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 3rem auto 0;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .contact-item:last-child { margin-bottom: 0; }
+
+        .contact-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            background: rgba(232, 69, 32, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--warm-gray);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-item p, .contact-item a {
+            color: var(--cream);
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover { color: var(--flame); }
+
+        .map-container {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .map-container iframe {
+            width: 100%; height: 100%;
+            border: none;
+            filter: grayscale(0.6) brightness(0.7) contrast(1.2);
+            transition: filter 0.5s;
+        }
+
+        .map-container:hover iframe {
+            filter: grayscale(0) brightness(0.9) contrast(1.1);
+        }
+
+        /* ─── CTA BANNER ─── */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--flame), var(--flame-dark));
+            padding: 5rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(245, 183, 49, 0.3), transparent 60%);
+        }
+
+        .cta-banner h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--cream);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-banner p {
+            color: rgba(255,255,255,0.85);
+            margin: 1rem auto 2rem;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-banner .btn {
+            position: relative;
+            z-index: 1;
+            background: var(--cream);
+            color: var(--flame);
+        }
+        .cta-banner .btn:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--charcoal);
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cream);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-logo span { color: var(--flame); }
+
+        footer p {
+            color: var(--warm-gray);
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            color: var(--warm-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--cream); }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background: var(--charcoal);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0;
+                z-index: 150;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            .nav-links.open {
+                opacity: 1;
+                visibility: visible;
+                display: flex;
+            }
+
+            .nav-links li {
+                list-style: none;
+                width: 100%;
+                text-align: center;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.open li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .nav-links.open li:nth-child(1) { transition-delay: 0.1s; }
+            .nav-links.open li:nth-child(2) { transition-delay: 0.15s; }
+            .nav-links.open li:nth-child(3) { transition-delay: 0.2s; }
+            .nav-links.open li:nth-child(4) { transition-delay: 0.25s; }
+            .nav-links.open li:nth-child(5) { transition-delay: 0.3s; }
+            .nav-links.open li:nth-child(6) { transition-delay: 0.35s; }
+
+            .nav-links a {
+                font-family: 'Bebas Neue', sans-serif;
+                font-size: 1.5rem;
+                letter-spacing: 3px;
+                display: block;
+                padding: 0.7rem 2rem;
+                color: var(--warm-gray);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                text-transform: uppercase;
+            }
+
+            .nav-links a:hover {
+                background: rgba(232, 69, 32, 0.1);
+                color: var(--flame);
+            }
+
+            .nav-links a::after { display: none; }
+
+            .nav-links .nav-cta {
+                margin-top: 1rem;
+                display: inline-block;
+                padding: 0.8rem 2.5rem;
+                font-size: 1.1rem;
+                border-radius: 50px;
+                border-bottom: none;
+                color: var(--cream) !important;
+            }
+
+            .hamburger { display: flex; }
+
+            section { padding: 4rem 1.5rem; }
+
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .avis-grid { grid-template-columns: 1fr; }
+
+            .hero-buttons { flex-direction: column; align-items: center; }
+
+            .floating-badge { bottom: 1rem; left: 0.5rem; }
+
+            .avis-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="logo">LE <span>47</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#about">À Propos</a></li>
+            <li><a href="#horaires">Horaires</a></li>
+            <li><a href="#avis">Avis</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="tel:0567066969" class="nav-cta">Commander</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg-glow glow-1"></div>
+        <div class="hero-bg-glow glow-2"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Quartier Bagatelle — Toulouse</div>
+            <h1>BURGERS<br><span class="accent">&</span> PIZZAS<br>D'EXCEPTION</h1>
+            <p class="hero-sub">Des produits frais, une viande de qualité et des recettes artisanales. Bienvenue au 47.</p>
+            <div class="hero-buttons">
+                <a href="tel:0567066969" class="btn btn-primary">📞 Appeler pour Commander</a>
+                <a href="#menu" class="btn btn-outline">Voir le Menu</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Découvrir</span>
+            <div class="line"></div>
+        </div>
+    </section>
+
+    <!-- SPÉCIALITÉS -->
+    <section id="menu">
+        <div style="text-align:center;">
+            <div class="section-label reveal">Nos Spécialités</div>
+            <h2 class="section-title reveal">Fait Maison, Fait avec Passion</h2>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🍔</span>
+                <h3>Le 47 Burger</h3>
+                <p>Pain brioché, 2 steaks du boucher, rösti, chèvre miel, cheddar, salade, tomates et frites double cuisson.</p>
+                <span class="price">À partir de 14,90 €</span>
+            </div>
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🥖</span>
+                <h3>L'Américain</h3>
+                <p>Pain sésame, steak 180g, bacon grillé, cheddar, salade, tomates, oignons rouges, sauce burger maison.</p>
+                <span class="price">À partir de 13,90 €</span>
+            </div>
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🍕</span>
+                <h3>Nos Pizzas</h3>
+                <p>Pâte fraîche préparée sur place, sauce tomate onctueuse et garnitures généreuses. La qualité italienne à Bagatelle.</p>
+                <span class="price">Carte variée</span>
+            </div>
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🍟</span>
+                <h3>Frites Double Cuisson</h3>
+                <p>Nos fameuses frites croustillantes à l'extérieur, fondantes à l'intérieur. Accompagnement incontournable !</p>
+                <span class="price">Incluses dans les menus</span>
+            </div>
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🧀</span>
+                <h3>Double Cheeseburger</h3>
+                <p>2 steaks du boucher, double cheddar, cornichons, oignons rouges, sauce ketchup-moutarde maison.</p>
+                <span class="price">À partir de 13,90 €</span>
+            </div>
+            <div class="menu-card reveal">
+                <span class="menu-card-icon">🍰</span>
+                <h3>Tarte Daim</h3>
+                <p>Pour terminer en douceur, notre dessert phare : la tarte Daim, un pur délice croquant et fondant.</p>
+                <span class="price">4,50 €</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- À PROPOS -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text reveal">
+                <div class="section-label">Notre Histoire</div>
+                <h2 class="section-title">Le Goût de<br>L'Authentique</h2>
+                <p>Au cœur du quartier Bagatelle à Toulouse, Le 47 est bien plus qu'un fast food. C'est une adresse où la qualité des produits, la fraîcheur de la viande et le savoir-faire artisanal se rencontrent pour vous offrir une expérience gustative incomparable.</p>
+                <p>Nos burgers sont préparés avec des steaks du boucher, nos pains sont livrés frais chaque jour, et nos frites sont cuites en double cuisson pour un croustillant parfait. Disponible sur place, à emporter, ou en livraison via Uber Eats et Deliveroo.</p>
+                <div class="about-stats">
+                    <div class="stat-box">
+                        <div class="number">4.5</div>
+                        <div class="label">Note Google</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">240+</div>
+                        <div class="label">Avis clients</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">100%</div>
+                        <div class="label">Frais & artisanal</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">3</div>
+                        <div class="label">Modes de commande</div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual reveal">
+                <div class="about-image-placeholder">
+                    🍔
+                </div>
+                <div class="floating-badge">
+                    <div class="badge-number">N°206</div>
+                    <div class="badge-text">Fast food à Toulouse</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HORAIRES -->
+    <section id="horaires">
+        <div style="text-align:center;">
+            <div class="section-label reveal">Horaires d'ouverture</div>
+            <h2 class="section-title reveal">Quand Venir Nous Voir</h2>
+        </div>
+        <div class="horaires-container reveal">
+            <div class="horaire-row">
+                <span class="day">Lundi</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <div class="horaire-row">
+                <span class="day">Mardi</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <div class="horaire-row">
+                <span class="day">Mercredi</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <div class="horaire-row" id="todayRow">
+                <span class="day">Jeudi</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <div class="horaire-row">
+                <span class="day">Vendredi</span>
+                <span class="hours"><span class="dot"></span>18h00 — 01h00</span>
+            </div>
+            <div class="horaire-row">
+                <span class="day">Samedi</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <div class="horaire-row">
+                <span class="day">Dimanche</span>
+                <span class="hours"><span class="dot"></span>12h00 — 01h00</span>
+            </div>
+            <p class="horaire-note">Commande possible jusqu'à 30 minutes avant la fermeture. Livraison via Uber Eats & Deliveroo.</p>
+        </div>
+    </section>
+
+    <!-- AVIS -->
+    <section id="avis">
+        <div class="reveal">
+            <div class="section-label">Avis Clients</div>
+            <div class="avis-header">
+                <div class="avis-score">4.5</div>
+                <div class="avis-score-details">
+                    <div class="stars">★★★★★</div>
+                    <div class="avis-count">Plus de 240 avis sur Google & Uber Eats</div>
+                </div>
+            </div>
+        </div>
+        <div class="avis-grid">
+            <div class="avis-card reveal">
+                <div class="avis-stars">★★★★★</div>
+                <p>« Première fois que je viens et vraiment pas déçu ! Les pizzas sont excellentes, les burgers sont géniaux avec une viande très fraîche. Je recommande ! »</p>
+                <div class="avis-author">— Client Google</div>
+            </div>
+            <div class="avis-card reveal">
+                <div class="avis-stars">★★★★★</div>
+                <p>« Commande à emporter délicieuse ! Bravo au cuisto, le burger est parfait du goût à la texture. Bon rapport qualité-prix et des produits frais. »</p>
+                <div class="avis-author">— Client Google</div>
+            </div>
+            <div class="avis-card reveal">
+                <div class="avis-stars">★★★★★</div>
+                <p>« C'est succulent, le personnel est agréable. Je recommande à 100% ! Les frites sont incroyables, toujours aussi bon. C'est un pur régal ! »</p>
+                <div class="avis-author">— Client Google</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div style="text-align:center;">
+            <div class="section-label reveal">Nous Trouver</div>
+            <h2 class="section-title reveal">Venez Nous Rendre Visite</h2>
+        </div>
+        <div class="contact-grid reveal">
+            <div class="contact-card">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h4>Adresse</h4>
+                        <p>44 Rue du Lot<br>31100 Toulouse — Quartier Bagatelle</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <h4>Téléphone</h4>
+                        <a href="tel:0567066969">05 67 06 69 69</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🛵</div>
+                    <div>
+                        <h4>Livraison</h4>
+                        <p>Disponible sur Uber Eats & Deliveroo</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🍽️</div>
+                    <div>
+                        <h4>Services</h4>
+                        <p>Sur place · À emporter · Livraison</p>
+                    </div>
+                </div>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.5!2d1.4138!3d43.5835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDM1JzAwLjYiTiAxwrAyNCc0OS42IkU!5e0!3m2!1sfr!2sfr!4v1" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner">
+        <h2>Envie d'un Bon Burger ?</h2>
+        <p>Appelez-nous pour commander à emporter ou passez directement au restaurant.</p>
+        <a href="tel:0567066969" class="btn">📞 05 67 06 69 69</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">LE <span>47</span></div>
+        <div class="footer-links">
+            <a href="#menu">Menu</a>
+            <a href="#horaires">Horaires</a>
+            <a href="#contact">Contact</a>
+            <a href="https://www.ubereats.com/fr/store/le-47/Wgzlh7slUw2ZcWx2uCXz9w" target="_blank">Uber Eats</a>
+        </div>
+        <p>44 Rue du Lot, 31100 Toulouse · 05 67 06 69 69</p>
+        <p style="margin-top:0.8rem; opacity:0.5;">© 2026 Le 47 — Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        function toggleNav() {
+            const nav = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            nav.classList.toggle('open');
+            hamburger.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
+        }
+
+        // Close nav on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('open');
+                document.getElementById('hamburger').classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Highlight today's row
+        const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        const today = days[new Date().getDay()];
+        document.querySelectorAll('.horaire-row').forEach(row => {
+            if (row.querySelector('.day').textContent === today) {
+                row.classList.add('today');
+            }
+        });
+
+        // Smooth nav background
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(26, 26, 26, 0.95)';
+            } else {
+                nav.style.background = 'rgba(26, 26, 26, 0.85)';
+            }
+        });
+    </script>
+
+</body>
+</html>
